@@ -29,4 +29,14 @@ Controllers - Tell us what we can do and connect views to our models. We can thi
 
 We're using express framework to build a server, in which we are using mongoose to process a request and run CRUD operations using a mongoDB instance.
 
-What we're building is a REST api that runs full CRUP operations on a single resource. 
+What we're building is a REST api that runs full CRUD operations on a single resource. 
+
+## What is REST???
+
+- REST stands for REpresentational State Transfer
+
+It's a set of principles that describe how networked resources are sccessed and manipulated.
+
+So far, we've used 5 RESTful routes to build our API.
+
+The two routes that we haven't used so far are new and edit.  These are designed to display a page that renders a form, so that we can send a request body from the browser to our server.
