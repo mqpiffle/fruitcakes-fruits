@@ -7,6 +7,7 @@ const mongoose = require('mongoose') // import the mongoose library
 const morgan = require('morgan') // import the morgan request logger
 require('dotenv').config() // Load my ENV file's variables
 const path = require('path') // import path module
+const { allowedNodeEnvironmentFlags } = require('process')
 const { start } = require('repl')
 
 // ***********
@@ -110,15 +111,45 @@ app.get('/fruits/seed', (req, res) => {
     
 })
 
-// index route -> displays all fruits
+// INDEX route 
+// Read -> finds and displays all fruits
 
-app.get('fruits', (req, res) => {
+app.get('/fruits', (req, res) => {
     // find all the fruits
     Fruit.find({})
         .then(fruits => { res.json({ fruits: fruits })})
         .catch(err => console.log('The following error ocurred: \n', err))
     // send json if successful
     // catch errors
+})
+
+// CREATE route
+// Create -> receives a request body, and creates a new document in the database
+app.post('/fruits', (req, res) => {
+    // here we'll have something called a request body
+    // called req.body
+    // pass req.body to the create method
+    const newFruit = req.body
+    Fruit.create(newFruit)
+        .then(fruit => {
+            // then send a 201 status along with the json response of the new route
+            res.status(201).json({ fruit: fruit.toObject() })
+        })
+        .catch(err => console.log(err))
+    
+    // send an error if one occurs
+    
+})
+
+// SHOW route
+// Read -> finds and displays a single resource
+app.get('/fruits/:id', (req, res) => {
+    // get the id -> save to variable
+    const id = req.params.id
+    Fruit.findById(id)
+        .then(fruit => {
+            res.json({ fruit: fruit })
+        })
 })
 
 

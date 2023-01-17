@@ -24,3 +24,9 @@ Models -all our data, what shape it's in and what resourse we're using, and how 
 Views - the different ways we can see our data, whether it's a JSON response or an HTML response. Determines how our data can be viewed by the user.
 
 Controllers - Tell us what we can do and connect views to our models. We can think of our routes as out controllers, because they determine how a user can interaect with our resources.
+
+## How we talk about what we're doing
+
+We're using express framework to build a server, in which we are using mongoose to process a request and run CRUD operations using a mongoDB instance.
+
+What we're building is a REST api that runs full CRUP operations on a single resource. 
