@@ -141,6 +141,36 @@ app.post('/fruits', (req, res) => {
     
 })
 
+// PUT route
+// Update -> updates a specific fruit
+// PUT replaces the entire document with a new document from the request body
+// PATCH is able to update specific fields at specific times, but it requires more code to ensure it runs properly
+app.put('/fruits/:id', (req, res) => {
+    // save id to a variable for easy use later
+    const id = req.params.id
+    // save the request body to a variable for easy reference later
+    const updatedFruit = req.body
+    // we're going to use the mongoose method:
+    // findByIdAndUpdate
+    // eventually we'll change how this route works but for now we'll do everything in one shot
+    Fruit.findByIdAndUpdate(id, updatedFruit, { new: true })
+        .then(fruit => {
+            console.log('the newly updated fruit', fruit)
+            // update success message
+            res.sendStatus(204)
+        })
+        .catch(err => console.log(err))
+})
+// DELETE route
+// Delete -> deletes a specific route
+app.delete('/fruits/:id', (req, res) => {
+    const id = req.params.id
+    Fruit.findByIdAndRemove(id)
+        .then(() => {
+            res.sendStatus(204)
+        })
+        .catch(err => console.log(err))
+})
 // SHOW route
 // Read -> finds and displays a single resource
 app.get('/fruits/:id', (req, res) => {
