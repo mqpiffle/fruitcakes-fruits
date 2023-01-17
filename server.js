@@ -110,6 +110,17 @@ app.get('/fruits/seed', (req, res) => {
     
 })
 
+// index route -> displays all fruits
+
+app.get('fruits', (req, res) => {
+    // find all the fruits
+    Fruit.find({})
+        .then(fruits => { res.json({ fruits: fruits })})
+        .catch(err => console.log('The following error ocurred: \n', err))
+    // send json if successful
+    // catch errors
+})
+
 
 
 
