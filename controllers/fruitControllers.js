@@ -29,6 +29,9 @@ const router = express.Router()
 router.get('/', (req, res) => {
     // find all the fruits
     Fruit.find({})
+        // there's a built-in function that runs before the rest of the promise chain
+        // called populate, it's able to retrieve info for other documents in other collections
+        .populate('owner', '-password')
         .then(fruits => { res.json({ fruits: fruits })})
         .catch(err => {
             console.log(err)
@@ -67,6 +70,7 @@ router.post('/', (req, res) => {
 router.get('/mine', (req, res) => {
     // find fruits by ownership, using req.session info
     Fruit.find({ owner: req.session.userId })
+        .populate('owner', '-password')
         .then(fruits => {
             // if found display fruits
             res.status(200).json({ fruits: fruits })
@@ -78,42 +82,52 @@ router.get('/mine', (req, res) => {
         })
 })
 
-// PUT route
-// Update -> updates a specific fruit
-// PUT replaces the entire document with a new document from the request body
-// PATCH is able to update specific fields at specific times, but it requires more code to ensure it runs properly
+
 router.put('/:id', (req, res) => {
-    // save id to a variable for easy use later
     const id = req.params.id
-    // save the request body to a variable for easy reference later
-    const updatedFruit = req.body
-    // we're going to use the mongoose method:
-    // findByIdAndUpdate
-    // eventually we'll change how this route works but for now we'll do everything in one shot
-    Fruit.findByIdAndUpdate(id, updatedFruit, { new: true })
+    Fruit.findById(id)
         .then(fruit => {
-            console.log('the newly updated fruit', fruit)
-            // update success message
-            res.sendStatus(204)
+            // if the owner of the fruit is the person who is logged in
+            if (fruit.owner == req.session.userId) {
+                //update and save the fruit
+                res.sendStatus(204)
+                // and send success message
+                return fruit.updateOne(req.body)
+            } else {
+                // otherwise send a 401 unauthorized status
+                res.sendStatus(401)
+            }
         })
         .catch(err => {
             console.log(err)
-            res.status(404).json(err)
+            res.status(400).json(err)
         })
 })
+
 // DELETE route
 // Delete -> deletes a specific route
+
 router.delete('/:id', (req, res) => {
     const id = req.params.id
-    Fruit.findByIdAndRemove(id)
-        .then(() => {
-            res.sendStatus(204)
+    Fruit.findById(id)
+        .then(fruit => {
+            // if the owner of the fruit is the person who is logged in
+            if (fruit.owner == req.session.userId) {
+                //update and save the fruit
+                res.sendStatus(204)
+                // and send success message
+                return fruit.deleteOne()
+            } else {
+                // otherwise send a 401 unauthorized status
+                res.sendStatus(401)
+            }
         })
         .catch(err => {
             console.log(err)
-            res.status(404).json(err)
+            res.status(400).json(err)
         })
 })
+
 // SHOW route
 // Read -> finds and displays a single resource
 router.get('/:id', (req, res) => {
