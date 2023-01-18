@@ -41,9 +41,13 @@ router.get('/', (req, res) => {
 // CREATE route
 // Create -> receives a request body, and creates a new document in the database
 router.post('/', (req, res) => {
+    console.log('this is req.body before owner: \n', req.body)
     // here we'll have something called a request body
     // called req.body
     // pass req.body to the create method
+    // we want to add an owner field to our fruit
+    // luckily for us we saved the user's id on the session object so it's really easy for us to access that data
+    req.body.owner = req.session.userId
     const newFruit = req.body
     Fruit.create(newFruit)
         .then(fruit => {
@@ -51,12 +55,27 @@ router.post('/', (req, res) => {
             res.status(201).json({ fruit: fruit.toObject() })
         })
         .catch(err => {
+            // send an error if one occurs
             console.log(err)
             res.status(404).json(err)
         })
-    
-    // send an error if one occurs
-    
+})
+
+// GET route
+// Index => user specific route
+// this will show the logged in user's fruits
+router.get('/mine', (req, res) => {
+    // find fruits by ownership, using req.session info
+    Fruit.find({ owner: req.session.userId })
+        .then(fruits => {
+            // if found display fruits
+            res.status(200).json({ fruits: fruits })
+        })
+        .catch(err => {
+            // otherwise throw error
+            console.log(err)
+            res.status(400).json(err)
+        })
 })
 
 // PUT route

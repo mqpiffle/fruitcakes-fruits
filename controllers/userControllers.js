@@ -96,9 +96,8 @@ router.post('/login', async (req, res) => {
 // this route destroys a session in our db and the browser
 router.delete('/logout', (req, res) => {
     // destroy session and send an appropriate response
-    req.session.destroy(err => {
+    req.session.destroy(() => {
         console.log('this is req.session upon logout \n', req.session)
-        console.log('error on logout? \n', err)
         //eventually we will rediect users here, after view layer
         res.sendStatus(204)
     })
