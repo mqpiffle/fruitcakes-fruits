@@ -8,6 +8,8 @@ const morgan = require('morgan') // import the morgan request logger
 require('dotenv').config() // Load my ENV file's variables
 const path = require('path') // import path module
 const FruitRouter = require('./controllers/fruitControllers')
+const UserRouter = require('./controllers/userControllers')
+const User = require('./models/user')
 const middleware = require('./utils/middleware')
 
 // ***********
@@ -28,8 +30,6 @@ const app = express()
 
 middleware(app)
 
-
-
 // ***********
 // Routes
 // ***********
@@ -42,9 +42,10 @@ app.get('/', (req, res) => {
 // this is how server.js knows to send the correct response
 // app.use when we register our route, needs two args
 // 1st arg -> base url
-// 2nd arf -> file to use
+// 2nd arg -> file to use
 
 app.use('/fruits', FruitRouter)
+app.use('/users', UserRouter)
 
 // ***********
 // Server Listener
