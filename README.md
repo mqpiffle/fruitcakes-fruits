@@ -35,8 +35,20 @@ What we're building is a REST api that runs full CRUD operations on a single res
 
 - REST stands for REpresentational State Transfer
 
-It's a set of principles that describe how networked resources are sccessed and manipulated.
+It's a set of principles that describe how networked resources are accessed and manipulated.
 
-So far, we've used 5 RESTful routes to build our API.
+There are 7 RESTful routes that allow us basic operations for reading and manipulating a collection of data:
 
-The two routes that we haven't used so far are new and edit.  These are designed to display a page that renders a form, so that we can send a request body from the browser to our server.
+| **URL**          | **HTTP Verb**|**Action**|
+|------------------|--------------|----------|
+| /fruits/         | GET          | index  
+| /fruits/:id      | GET          | show       
+| /fruits/new      | GET          | new   
+| /fruits          | POST         | create   
+| /fruits/:id/edit | GET          | edit       
+| /fruits/:id      | PATCH/PUT    | update    
+| /fruits/:id      | DELETE       | destroy  
+
+So far, we've used 5 of these 7 RESTful routes to build our API.
+
+The two routes that we haven't used so far are `new` and `edit`.  These are designed to display a page that renders a form, so that we can send a request body from the browser to our server.
