@@ -2,7 +2,14 @@
 // Our schema and model for the fruit resource
 // ***********
 
-const mongoose = require('mongoose') // import mongoose
+// this is the old mongoose import
+
+// const mongoose = require('mongoose') // import mongoose 
+
+// now we want our mongoose object to realte to our db
+// so we're going to bring in the mongoose connection from our utils
+
+const mongoose = require('../utils/connection')
 
 // destructure the schema and model function from mongoose
 
