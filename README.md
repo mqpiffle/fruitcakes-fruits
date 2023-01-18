@@ -63,3 +63,9 @@ Main entry file is still `server.js`. This is where we establish our connection 
 `fruitControllers` is where we setup our routes to utilize mongoose to interact with fruit documents in our mongodb.
 
 The connection between fruits and mongodb starts with the file `utils/connection.js`, where we define and connect to our database. The Fruit model in `models/fruit.js` is where this connection happens. Our fruitControllers import the model Fruit, and run mongoose model methods whenever we hit the appropriate route.
+
+## Middleware
+
+Middleware is processed by a function in the utils directory `utils/middleqare.js`. 
+
+This middleware function takes one argument, app, and processes requests through our middleware.
