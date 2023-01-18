@@ -10,13 +10,6 @@ const path = require('path') // import path module
 const FruitRouter = require('./controllers/fruitControllers')
 
 // ***********
-// Import Models
-// ***********
-
-const Fruit = require('./models/fruit')
-
-
-// ***********
 // Create our Express App Object
 // ***********
 
