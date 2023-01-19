@@ -21,8 +21,6 @@ const router = express.Router()
 // first -> seed route, they work but they are not best practice
 // second -> seed script, they work and they ARE best practice
 
-
-
 // INDEX route 
 // Read -> finds and displays all fruits
 
@@ -45,12 +43,12 @@ router.get('/', (req, res) => {
 // Create -> receives a request body, and creates a new document in the database
 router.post('/', (req, res) => {
     console.log('this is req.body before owner: \n', req.body)
+    // luckily for us we saved the user's id on the session object so it's really easy for us to access that data
+    req.body.owner = req.session.userId
     // here we'll have something called a request body
     // called req.body
     // pass req.body to the create method
     // we want to add an owner field to our fruit
-    // luckily for us we saved the user's id on the session object so it's really easy for us to access that data
-    req.body.owner = req.session.userId
     const newFruit = req.body
     Fruit.create(newFruit)
         .then(fruit => {
@@ -82,6 +80,7 @@ router.get('/mine', (req, res) => {
         })
 })
 
+// UPDATE route
 
 router.put('/:id', (req, res) => {
     const id = req.params.id

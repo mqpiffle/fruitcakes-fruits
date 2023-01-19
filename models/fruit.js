@@ -10,6 +10,8 @@
 // so we're going to bring in the mongoose connection from our utils
 
 const mongoose = require('../utils/connection')
+// import comment schema to use as subdocument
+const commentSchema = require('./comment')
 
 // destructure the schema and model function from mongoose
 
@@ -28,12 +30,13 @@ const fruitSchema = new Schema({
         type: Boolean
     },
     owner: {
-        //this is where we setup an object id reference
+        // this is where we setup an object id reference
         // by declaring that as the type
         type: Schema.Types.ObjectId,
         // tell us which model to look at
         ref: 'User'
-    }
+    },
+    comments: [commentSchema]
 }, {
     timestamps: true
 })

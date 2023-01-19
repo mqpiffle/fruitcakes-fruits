@@ -23,7 +23,7 @@ const middleware = (app) => {
     // before mongoose can do anything with it
 
     app.use(morgan('tiny')) // this is for request logging, the 'tiny' argument declares what size of morgan log to use
-    app.use(express.urlencoded({ extended: true })) // this parses urlEncoded reuest bodies, useful for POST and PUT requests
+    app.use(express.urlencoded({ extended: true })) // this parses urlEncoded request bodies, useful for POST and PUT requests
     app.use(express.static('public')) // this serves static files from the 'public' folder
     app.use(express.json()) // this parses incoming request payloads with JSON
     // setup and utilize a session function, and we pass that function a config argument to configure our session. This argument will tell express-session how to create and store our session.
