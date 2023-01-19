@@ -39,6 +39,17 @@ It's a set of principles that describe how networked resources are accessed and 
 
 There are 7 RESTful routes that allow us basic operations for reading and manipulating a collection of data:
 
+## Route tables for documents
+
+#### Fruits
+
+| **URL**          | **HTTP Verb**|**Action**|
+|------------------|--------------|----------|
+| /comments/:fruitId| POST          | create  
+| /comments/delete/:fruitId/:commentId      | DELETE          | destroy       
+
+#### Comments
+
 | **URL**          | **HTTP Verb**|**Action**|
 |------------------|--------------|----------|
 | /fruits/         | GET          | index  
@@ -47,7 +58,16 @@ There are 7 RESTful routes that allow us basic operations for reading and manipu
 | /fruits          | POST         | create   
 | /fruits/:id/edit | GET          | edit       
 | /fruits/:id      | PATCH/PUT    | update    
-| /fruits/:id      | DELETE       | destroy  
+| /fruits/:id      | DELETE       | destroy 
+
+#### Users
+
+| **URL**          | **HTTP Verb**|**Action**|
+|------------------|--------------|----------|
+| /users/signup    | POST         | create 
+| /users/login     | POST         | create      
+| /users/logout    | DELETE       | destroy   
+
 
 So far, we've used 5 of these 7 RESTful routes to build our API.
 
@@ -69,3 +89,17 @@ The connection between fruits and mongodb starts with the file `utils/connection
 Middleware is processed by a function in the utils directory `utils/middleqare.js`. 
 
 This middleware function takes one argument, app, and processes requests through our middleware.
+
+## Relationships
+
+One to many: 
+    - One user can have many routes
+    - One fruit can have many comments
+
+Fruits are connected to Users through tthe `fruit.owner` field via the `objectId` reference.
+
+Comments are connected to Fruits as an array of subdocuments at `fruit.comments`.
+
+Users are connected to comments via `objectId` reference at `comment.author`.
+
+This is an enitity relationship diagram (not shown). This accurately describes the relationships between the documents of this project.
