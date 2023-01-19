@@ -29,7 +29,8 @@ router.get('/', (req, res) => {
     Fruit.find({})
         // there's a built-in function that runs before the rest of the promise chain
         // called populate, it's able to retrieve info for other documents in other collections
-        .populate('owner', '-password')
+        .populate('owner', 'username')
+        .populate('comments: author', '-password')
         .then(fruits => { res.json({ fruits: fruits })})
         .catch(err => {
             console.log(err)
@@ -68,7 +69,8 @@ router.post('/', (req, res) => {
 router.get('/mine', (req, res) => {
     // find fruits by ownership, using req.session info
     Fruit.find({ owner: req.session.userId })
-        .populate('owner', '-password')
+        .populate('owner', 'username')
+        .populate('comments: author', '-password')
         .then(fruits => {
             // if found display fruits
             res.status(200).json({ fruits: fruits })
@@ -133,6 +135,7 @@ router.get('/:id', (req, res) => {
     // get the id -> save to variable
     const id = req.params.id
     Fruit.findById(id)
+        .populate('comments.author', 'username')
         .then(fruit => {
             res.json({ fruit: fruit })
         })
