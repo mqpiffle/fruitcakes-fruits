@@ -30,8 +30,13 @@ router.get('/', (req, res) => {
         // there's a built-in function that runs before the rest of the promise chain
         // called populate, it's able to retrieve info for other documents in other collections
         .populate('owner', 'username')
-        .populate('comments: author', '-password')
-        .then(fruits => { res.json({ fruits: fruits })})
+        .populate('comments.author', '-password')
+        .then(fruits => {
+            // res.json({ fruits: fruits })
+            // now that we are using liquid
+            // we are going to use render as a response
+            res.render('fruits/index', { fruits })
+        })
         .catch(err => {
             console.log(err)
             res.status(404).json(err)
@@ -70,7 +75,7 @@ router.get('/mine', (req, res) => {
     // find fruits by ownership, using req.session info
     Fruit.find({ owner: req.session.userId })
         .populate('owner', 'username')
-        .populate('comments: author', '-password')
+        .populate('comments.author', '-password')
         .then(fruits => {
             // if found display fruits
             res.status(200).json({ fruits: fruits })

@@ -103,3 +103,7 @@ Comments are connected to Fruits as an array of subdocuments at `fruit.comments`
 Users are connected to comments via `objectId` reference at `comment.author`.
 
 This is an enitity relationship diagram (not shown). This accurately describes the relationships between the documents of this project.
+
+## Views Layer
+
+We're using liquidjs for our views
