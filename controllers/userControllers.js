@@ -16,6 +16,16 @@ const router = express.Router()
 // Routes
 // ***********
 
+// GET -> /users/signup
+// Renders a liquid page with the signup form
+
+router.get('/signup', (req, res) => {
+    // res.render points to a file
+    // res.redirect points to a url
+    res.render('users/signup')
+})
+
+
 // POST -> /users/signup
 // this route creates new users in our db
 
@@ -35,13 +45,22 @@ router.post('/signup', async (req, res) => {
         // if we're successful, send a 201 status
         .then(user => {
             // console.log('new user created \n', user)
-            res.status(201).json({ username: user.username})
+            // res.status(201).json({ username: user.username})
+            // makes sense to me to redirect to the login page
+            res.redirect('/users/login')
         })
         // if there is an error, handle the error
         .catch(err => {
             console.log(err)
-            res.json(err)
+            res.redirect('/error?error=username%20taken')
         })
+})
+
+// GET -> /users/login
+// Renders a liquid page with the signup form
+
+router.get('/login', (req, res) => {
+    res.render('users/login')
 })
 
 // POST -> /users/login
@@ -74,22 +93,32 @@ router.post('/login', async (req, res) => {
                     // console.log('this is req.session \n', req.session)
 
                     // we'll send a 201 response
-                    res.status(201).json({ username: user.username })
+                    res.redirect('/')
                 } else {
                     // if the pw's don't match, send the user a message
-                    res.json({ error: 'username or password is incorrect'})
+                    // res.json({ error: 'username or password is incorrect'})
+                    res.redirect('/error?error=username%20or%20password%20is%20incorrect')
                 }
             } else {
                 // if a user does not exist, we respond with a message saying so
-                res.json({ error: 'user does not exist' })
+                // res.json({ error: 'user does not exist' })
+                res.redirect('/error?error=user%20does%20not%20exist')
             }
              
         })
         .catch(err => {
             console.log(err)
-            res.json(err)
+            // res.json(err)
+            res.redirect(`/error?error=${error}`)
         })
 
+})
+
+// GET -> /users/logout
+// this route renders a page that allows a user to log out
+
+router.get('/logout', (req, res) => {
+    res.render('users/logout')
 })
 
 // DELETE -> /users/logout
@@ -99,7 +128,7 @@ router.delete('/logout', (req, res) => {
     req.session.destroy(() => {
         console.log('this is req.session upon logout \n', req.session)
         //eventually we will rediect users here, after view layer
-        res.sendStatus(204)
+        res.redirect('/')
     })
 })
 

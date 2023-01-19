@@ -1,0 +1,15 @@
+{% layout 'layout.liquid' %}
+{% block content %}
+  <div class="container-md">
+    <h2>Are you sure you would like to log out?</h2>
+    <div class="btn-group">
+      <a href="/" class="btn btn-warning">Nop, Back To Home Page</a>
+      <form action="/users/logout?_method=DELETE" method="POST">
+        <input
+          type="submit"
+          class="btn btn-danger"
+          value="Yes, Log Me Out">
+      </form>
+    </div>
+  </div>
+{% endblock %}
