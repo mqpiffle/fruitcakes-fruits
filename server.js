@@ -9,6 +9,7 @@ require('dotenv').config() // Load my ENV file's variables
 const path = require('path') // import path module
 const FruitRouter = require('./controllers/fruitControllers')
 const UserRouter = require('./controllers/userControllers')
+const CommentRouter = require('./controllers/commentControllers')
 const User = require('./models/user')
 const middleware = require('./utils/middleware')
 
@@ -45,7 +46,9 @@ app.get('/', (req, res) => {
 // 2nd arg -> file to use
 
 app.use('/fruits', FruitRouter)
+app.use('/comments', CommentRouter)
 app.use('/users', UserRouter)
+
 
 // ***********
 // Server Listener
