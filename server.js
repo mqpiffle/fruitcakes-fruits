@@ -10,14 +10,25 @@ const path = require('path') // import path module
 const FruitRouter = require('./controllers/fruitControllers')
 const UserRouter = require('./controllers/userControllers')
 const CommentRouter = require('./controllers/commentControllers')
-const User = require('./models/user')
 const middleware = require('./utils/middleware')
 
 // ***********
 // Create our Express App Object
 // ***********
 
-const app = express()
+// this was fine for building an api that sends and receives json
+// const app = express()
+
+// but now our app is going to be full-stack
+// means handling both fron-end and back-end from the same server in this case
+
+// we're utilizing an npm pkg - liquid-express-views - to add the view layer to our mvc framework
+// we need to update the app object to use that pkg
+
+const app = require('liquid-express-views')(express())
+
+// liquis-express-views makes it easy to path to our .liquid files which will serve our html
+// looks inside 'views' folder for files with .liquid name
 
 // ***********
 // Middleware
@@ -35,8 +46,9 @@ middleware(app)
 // Routes
 // ***********
 
+//HOME route
 app.get('/', (req, res) => {
-    res.send('Server is live, ready for requests')
+    res.render('home.liquid')
 })
 
 // this is now where we register our routes
