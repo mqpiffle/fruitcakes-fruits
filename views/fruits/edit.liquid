@@ -2,33 +2,39 @@
 {% block content %}
 
   <div class="container-sm">
-    <form action="/fruits" method="POST">
+    <form action="/fruits/{{fruit.id}}?_method=PUT" method="POST">
       <fieldset>
-        <legend>Create New Fruit</legend>
+        <legend>Edit {{ fruit.name }}</legend>
         <label class="form-label">Name</label>
         <input
           type="text"
           name="name"
           class="form-control"
           placeholder="What kind of fruit is it?"
-          required>
+          required
+          value="{{fruit.name}}">
         <label class="form-label">Color</label>
         <input
           type="color"
           name="color"
           class="form-control"
           placeholder="What color is it?"
-          required>
+          required
+          value="{{fruit.color}}">
         <label class="form-label">Ready to Eat</label>
         <input
           type="checkbox"
           name="readyToEat"
-          class="form-check-control">
+          class="form-check-control"
+          {% if fruit.readyToEat %}
+          checked
+          {% endif %}>
       </fieldset>
       <input
         type="submit"
         class="btn btn-success"
-        value="Create New Fruit">
+        value="Edit {{fruit.name}}">
+      <a href="/fruits/mine" class="btn btn-warning">Back</a>
     </form>
   </div>
 

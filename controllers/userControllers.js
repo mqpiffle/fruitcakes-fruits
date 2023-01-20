@@ -109,7 +109,7 @@ router.post('/login', async (req, res) => {
         .catch(err => {
             console.log(err)
             // res.json(err)
-            res.redirect(`/error?error=${error}`)
+            res.redirect(`/error?error=${err}`)
         })
 
 })

@@ -15,6 +15,9 @@ const router = express.Router()
 // Routes
 // ***********
 
+// res.resnder POINTS TO A FILE
+// res.redirect POINTS TO A ROUTE
+
 // we're going to build a seed route
 // this will seed the db for us with a few starter resources
 // there are two ways to seed a db
@@ -39,7 +42,7 @@ router.get('/', (req, res) => {
         })
         .catch(err => {
             console.log(err)
-            res.status(404).json(err)
+            res.redirect(`/error?error=${err}`)
         })
     // send json if successful
     // catch errors
@@ -64,19 +67,24 @@ router.post('/', (req, res) => {
     // we want to add an owner field to our fruit
     // we need to do a little js magic for our checkbox
     req.body.readyToEat = req.body.readyToEat === 'on' ? true : false
-    
+
     const newFruit = req.body 
        console.log('this is req.body before owner: \n', req.body)
 
     Fruit.create(newFruit)
         .then(fruit => {
             // then send a 201 status along with the json response of the new route
-            res.status(201).json({ fruit: fruit.toObject() })
+            // res.status(201).json({ fruit: fruit.toObject() })
+            // view
+            // mine page
+            // res.redirect('/fruits/mine')
+            // new fruit's show page
+            res.redirect(`/fruits/${fruit.id}`)
         })
         .catch(err => {
             // send an error if one occurs
             console.log(err)
-            res.status(404).json(err)
+            res.redirect(`/error?error=${err}`)
         })
 })
 
@@ -95,30 +103,47 @@ router.get('/mine', (req, res) => {
         .catch(err => {
             // otherwise throw error
             console.log(err)
-            res.status(400).json(err)
+            res.redirect(`/error?error=${err}`)
         })
 })
 
+// GET request -> edit route
+// shows the form for getting the fruit
+router.get('/edit/:id', (req, res) => {
+    const fruitId = req.params.id
+    Fruit.findById(fruitId)
+        .then(fruit => {
+            res.render('fruits/edit', { fruit, ...req.session })
+        })
+        .catch(err => {
+            res.redirect('/error?error=${err}')
+        })
+
+})
 // UPDATE route
 
 router.put('/:id', (req, res) => {
     const id = req.params.id
+    req.body.readyToEat = req.body.readyToEat === 'on' ? true : false
     Fruit.findById(id)
         .then(fruit => {
             // if the owner of the fruit is the person who is logged in
             if (fruit.owner == req.session.userId) {
                 //update and save the fruit
-                res.sendStatus(204)
+                // res.sendStatus(204)
                 // and send success message
                 return fruit.updateOne(req.body)
             } else {
                 // otherwise send a 401 unauthorized status
-                res.sendStatus(401)
+                res.redirect(`/error?error=${err}`)
             }
+        })
+        .then(fruit => {
+            res.redirect(`/fruits/${fruit.id}`)
         })
         .catch(err => {
             console.log(err)
-            res.status(400).json(err)
+            res.redirect(`/error?error=${err}`)
         })
 })
 
@@ -132,17 +157,20 @@ router.delete('/:id', (req, res) => {
             // if the owner of the fruit is the person who is logged in
             if (fruit.owner == req.session.userId) {
                 //update and save the fruit
-                res.sendStatus(204)
+                // res.sendStatus(204)
                 // and send success message
                 return fruit.deleteOne()
             } else {
                 // otherwise send a 401 unauthorized status
-                res.sendStatus(401)
+                res.redirect(`/error?error=${err}`)
             }
+        })
+        .then(() => {
+            res.redirect('/fruits/mine')
         })
         .catch(err => {
             console.log(err)
-            res.status(400).json(err)
+            res.redirect(`/error?error=${err}`)
         })
 })
 
@@ -158,7 +186,7 @@ router.get('/:id', (req, res) => {
         })
         .catch(err => {
             console.log(err)
-            res.status(404).json(err)
+            res.redirect(`/error?error=${err}`)
         })
 })
 
