@@ -27,7 +27,7 @@ const middleware = require('./utils/middleware')
 
 const app = require('liquid-express-views')(express())
 
-// liquis-express-views makes it easy to path to our .liquid files which will serve our html
+// liquid-express-views makes it easy to path to our .liquid files which will serve our html
 // looks inside 'views' folder for files with .liquid name
 
 // ***********
@@ -48,7 +48,8 @@ middleware(app)
 
 //HOME route
 app.get('/', (req, res) => {
-    res.render('home.liquid')
+    const { username, userID, loggedIn } = req.session
+    res.render('home.liquid', { username, userID, loggedIn })
 })
 
 // this is now where we register our routes
@@ -66,7 +67,8 @@ app.use('/users', UserRouter)
 
 app.get('/error', (req, res) => {
     const error = req.query.error || 'This page does not exist'
-    res.render('error.liquid', { error })
+    const { username, userID, loggedIn } = req.session
+    res.render('error.liquid', { error, username, userID, loggedIn })
 })
 
 // this catch all route will redirect a user to the error page
@@ -74,7 +76,6 @@ app.get('/error', (req, res) => {
 app.all('*', (req, res) => {
     res.redirect('/error')
 })
-
 
 // ***********
 // Server Listener

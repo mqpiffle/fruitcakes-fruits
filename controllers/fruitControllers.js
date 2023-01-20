@@ -35,7 +35,7 @@ router.get('/', (req, res) => {
             // res.json({ fruits: fruits })
             // now that we are using liquid
             // we are going to use render as a response
-            res.render('fruits/index', { fruits })
+            res.render('fruits/index', { fruits, ...req.session })
         })
         .catch(err => {
             console.log(err)
@@ -78,7 +78,7 @@ router.get('/mine', (req, res) => {
         .populate('comments.author', '-password')
         .then(fruits => {
             // if found display fruits
-            res.status(200).json({ fruits: fruits })
+            res.render('fruits/index', { fruits, ...req.session })
         })
         .catch(err => {
             // otherwise throw error
@@ -142,7 +142,7 @@ router.get('/:id', (req, res) => {
     Fruit.findById(id)
         .populate('comments.author', 'username')
         .then(fruit => {
-            res.json({ fruit: fruit })
+            res.render('fruits/show.liquid', { fruit, ...req.session })
         })
         .catch(err => {
             console.log(err)

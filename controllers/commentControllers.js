@@ -19,9 +19,9 @@ const router = express.Router()
 
 // subdocuments are not mongoose models
 // they don't have their own collection and they don't have the same model method
-// they have tehir own built-in methods
+// they do have their own built-in methods
 // a subdoc is never going to be view w/o it's parent document
-// therefore we'll never see a comment without seeing the fruit it was commented on first
+// therefore we'll never see a comment without calling the fruit it was commented on first
 
 // when we create a subdoc we MUST refer to the parent so that mongoose knows where in mongodb to store the subdoc
 
@@ -69,8 +69,8 @@ router.delete('/delete/:fruitId/:commId', (req, res) => {
     Fruit.findById(fruitId)
         .then(fruit => {
             // get the comment using built in subdoc method .id()
-                const theComment = fruit.comments.id(commId)
-                console.log('this is the comment to be deleted \n', theComment)
+            const theComment = fruit.comments.id(commId)
+            console.log('this is the comment to be deleted \n', theComment)
             // make sure user is logged in and they are the author of the comment
             if (req.session.loggedIn) {
                 // if they are the author allow them to delete
@@ -80,11 +80,11 @@ router.delete('/delete/:fruitId/:commId', (req, res) => {
                     fruit.save()
                     res.sendStatus(204)
                 } else {
-                    //otherwise send a 401 unauthorized status
+                    // otherwise send a 401 unauthorized status
                     res.sendStatus(401)
                 }
             } else {
-                //otherwise send a 401 unauthorized status
+                // otherwise send a 401 unauthorized status
                 res.sendStatus(401)
             }
         })

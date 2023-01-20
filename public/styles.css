@@ -1,3 +1,9 @@
 body {
     background-color: aqua;
 }
+
+.colorBox {
+    height: 25px;
+    width: 25px;
+    border: 1 px solid gray;
+}
